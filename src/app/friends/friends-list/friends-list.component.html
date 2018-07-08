@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Idade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let friend of friends | paginate: { itemsPerPage: 10, currentPage: p }">
+              <td>{{ friend.name }}</td>
+              <td>{{ friend.age }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer">
+        <pagination-controls (pageChange)="p = $event" autoHide="true" previousLabel="Anterior" nextLabel="Próximo"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
