@@ -1,5 +1,10 @@
 export class Friend {
-  constructor(public id: number,
-    public name: string,
-    public age: number) { }
+
+  public id: number;
+  public name: string;
+  public age: number;
+
+  constructor(values: Object = {}) {
+    Object.assign(this, values);
+  }
 }

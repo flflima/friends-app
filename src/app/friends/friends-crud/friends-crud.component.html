@@ -1,3 +1,50 @@
-<p>
-  friends-crud works!
-</p>
+<ngx-alerts></ngx-alerts>
+<div class="container" style="margin-top: 1%;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" *ngIf="this.idFriend === null">
+          Novo Amigo
+        </div>
+        <div class="card-header" *ngIf="this.idFriend !== null">
+          Editar Amigo
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <label for="name" style="font-weight: bold;">Nome</label>
+                    <input type="text" formControlName="name" class="form-control" maxlength="100" placeholder="Informe o nome" />
+
+                    <br/>
+
+                    <label for="age" style="font-weight: bold;">Idade</label>
+                    <select formControlName="age" class="form-control">
+                      <option value="" selected>Selecione uma opção</option>
+                      <option *ngFor="let ageVal of ageArray" value="{{ ageVal }}">{{ ageVal }}</option>
+                    </select>
+                  </div>
+                  <div class="card-footer">
+                    <div class="row float-right">
+                      <button type="button" class="btn" (click)="gotToFriendsList();">
+                        Voltar
+                      </button> &nbsp;
+                      <button type="button" class="btn btn-primary" (click)="saveFriend();" [disabled]="form.invalid" *ngIf="this.idFriend === null">
+                        Salvar
+                      </button>
+                      <button type="button" class="btn btn-primary" (click)="saveFriend();" [disabled]="form.invalid" *ngIf="this.idFriend !== null">
+                        Editar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

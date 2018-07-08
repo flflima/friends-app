@@ -1,24 +1,41 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-body">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Idade</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let friend of friends | paginate: { itemsPerPage: 10, currentPage: p }">
-              <td>{{ friend.name }}</td>
-              <td>{{ friend.age }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="card-footer">
-        <pagination-controls (pageChange)="p = $event" autoHide="true" previousLabel="Anterior" nextLabel="Próximo"></pagination-controls>
+<ngx-alerts></ngx-alerts>
+<div class="container" style="margin-top: 1%;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">Listar Amigos</div>
+        <div class="card-body">
+          <div class="row" style="margin-top: 2%; margin-bottom: 2%; margin-left: 1%;">
+            <button type="button" class="btn btn-primary" (click)="newFriend();">
+              Novo Amigo
+            </button>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let friend of friends | paginate: { itemsPerPage: 5, currentPage: p }">
+                <td>{{ friend.name }}</td>
+                <td>{{ friend.age }}</td>
+                <td>
+                  <button class="btn btn-warning" (click)="editFriend(friend.id)">Editar</button>
+                </td>
+                <td>
+                  <button class="btn btn-danger" (click)="deleteFriend(friend.id)">Excluir</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <pagination-controls (pageChange)="p = $event" autoHide="true" previousLabel="Anterior" nextLabel="Próximo"></pagination-controls>
+        </div>
       </div>
     </div>
   </div>

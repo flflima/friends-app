@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  friendsURL: 'http://localhost:8080/friends-rest/api/'
+  friendsURL: 'http://localhost:8080/friends-rest/api'
 };

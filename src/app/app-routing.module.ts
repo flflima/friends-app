@@ -1,17 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FriendsCrudComponent } from './friends/friends-crud/friends-crud.component';
 import { FriendsListComponent } from './friends/friends-list/friends-list.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'todos',
-  //   pathMatch: 'full'
-  // },
   {
-    path: 'blah',
+    path: 'friends',
     component: FriendsListComponent
+  },
+  {
+    path: 'friends/create',
+    component: FriendsCrudComponent
+  },
+  {
+    path: 'friends/edit/:id',
+    component: FriendsCrudComponent
+  },
+  {
+    path: '**',
+    redirectTo: 'friends',
+    pathMatch: 'full'
   }
 ];
 
