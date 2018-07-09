@@ -6,11 +6,11 @@ import { Http, Response } from '@angular/http';
 import { AlertService } from 'ngx-alerts';
 import { Observable } from 'rxjs/Observable';
 
+import { environment } from '../../environments/environment';
 import { Friend } from '../_model/friend';
-import { environment } from './../../environments/environment';
+import { Address } from './../_model/address';
 
-// tslint:disable-next-line:import-blacklist
-const API_URL = environment.friendsURL;
+const API_URL = environment.APIURL;
 
 @Injectable()
 export class FriendsService {
@@ -23,6 +23,15 @@ export class FriendsService {
       .map(response => {
         const friends = response.json();
         return friends.map((friend) => new Friend(friend));
+      })
+      .catch(this.handleError);
+  }
+
+  public getAllAddressesByFriendId(id: number): Observable<Address[]> {
+    return this.http.get(API_URL + '/friends/' + id + '/addresses')
+      .map(response => {
+        const addresses = response.json();
+        return addresses.map((address) => new Address(address));
       })
       .catch(this.handleError);
   }
@@ -60,19 +69,19 @@ export class FriendsService {
     return this.http
       .delete(API_URL + '/friends/' + id)
       .map(response => {
-        console.log(response.status);
         this.alertService.success('Amigo excluído com sucesso!');
         return response.status;
       })
-      .catch(this.handleError);
+      .catch((error: Response | any) => {
+        this.alertService.danger(error);
+        console.error('FriendsService::handleError', error);
+        return Observable.throw(error);
+      });
   }
 
-
-
   private handleError(error: Response | any) {
+    this.alertService.danger('error');
     console.error('FriendsService::handleError', error);
-
-    this.alertService.danger(error);
     return Observable.throw(error);
   }
 

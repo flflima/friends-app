@@ -15,14 +15,18 @@
               <tr>
                 <th>Nome</th>
                 <th>Idade</th>
-                <th></th>
-                <th></th>
+                <th style="width: 8%"></th>
+                <th style="width: 8%"></th>
+                <th style="width: 8%"></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let friend of friends | paginate: { itemsPerPage: 5, currentPage: p }">
                 <td>{{ friend.name }}</td>
                 <td>{{ friend.age }}</td>
+                <td>
+                  <button class="btn btn-success" (click)="listAddress(friend.id)">Endereço</button>
+                </td>
                 <td>
                   <button class="btn btn-warning" (click)="editFriend(friend.id)">Editar</button>
                 </td>

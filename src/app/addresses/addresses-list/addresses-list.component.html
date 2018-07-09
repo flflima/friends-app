@@ -1,0 +1,93 @@
+<ngx-alerts></ngx-alerts>
+<div class="container" style="margin-top: 1%;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">Listar Endereços</div>
+        <div class="card-body">
+          <div class="row" style="margin-top: 2%; margin-bottom: 2%; margin-left: 1%;">
+            <button type="button" class="btn" (click)="gotToFriendsList();">
+              Voltar
+            </button>&nbsp;
+            <button type="button" class="btn btn-primary" (click)="createAddress();">
+              Adicionar Endereço
+            </button>
+          </div>
+          <form [formGroup]="form">
+            <div class="row" *ngIf="showCreateForm">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-4">
+                        <label for="location" style="font-weight: bold;">Tipo Endereço</label>
+                        <select formControlName="location" class="form-control">
+                          <option value="" selected>Selecione uma opção</option>
+                          <option value="Casa">Casa</option>
+                          <option value="Trabalho">Trabalho</option>
+                          <option value="Escola">Escola</option>
+                        </select>
+                      </div>
+                      <div class="col-8">
+                        <label for="streetName" style="font-weight: bold;">Endereço</label>
+                        <input type="text" formControlName="streetName" class="form-control" maxlength="100" placeholder="Informe o endereço" />
+                      </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                      <div class="col-12">
+                        <label for="city" style="font-weight: bold;">Cidade</label>
+                        <input type="text" formControlName="city" class="form-control" maxlength="100" placeholder="Informe a cidade" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="row float-right">
+                      <button type="button" class="btn" (click)="closeForm();">
+                        Fechar
+                      </button>&nbsp;
+                      <button type="button" class="btn btn-primary" (click)="saveAddress();" [disabled]="form.invalid" *ngIf="this.addressEdit === null">
+                        Salvar
+                      </button>
+                      <button type="button" class="btn btn-primary" (click)="saveAddress();" [disabled]="form.invalid" *ngIf="this.addressEdit !== null">
+                        Editar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <br/>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Tipo Endereço</th>
+                <th>Endereço</th>
+                <th>Cidade</th>
+                <th style="width: 8%"></th>
+                <th style="width: 8%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let address of allAddresses | paginate: { itemsPerPage: 5, currentPage: p }">
+                <td>{{ address.location }}</td>
+                <td>{{ address.streetName }}</td>
+                <td>{{ address.city }}</td>
+                <td>
+                  <button class="btn btn-warning" (click)="editAddress(address)">Editar</button>
+                </td>
+                <td>
+                  <button class="btn btn-danger" (click)="deleteAddress(address.id)">Excluir</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer">
+          <pagination-controls (pageChange)="p = $event" autoHide="true" previousLabel="Anterior" nextLabel="Próximo"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

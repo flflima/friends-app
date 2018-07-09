@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Friend } from './../../_model/friend';
-import { FriendsService } from './../../_service/friends.service';
+import { Friend } from '../../_model/friend';
+import { FriendsService } from '../../_service/friends.service';
+import { AddressesService } from './../../_service/addresses.service';
 
 @Component({
   selector: 'app-friends-list',
@@ -14,7 +15,8 @@ export class FriendsListComponent implements OnInit {
   p = 1;
   friends: Friend[];
 
-  constructor(private friendService: FriendsService,
+  constructor(private friendsService: FriendsService,
+    private addressService: AddressesService,
     private router: Router) { }
 
   ngOnInit() {
@@ -22,7 +24,7 @@ export class FriendsListComponent implements OnInit {
   }
 
   loadAllFriends() {
-    this.friendService.getAllFriends().subscribe(
+    this.friendsService.getAllFriends().subscribe(
       data => {
         this.friends = data;
       },
@@ -39,10 +41,13 @@ export class FriendsListComponent implements OnInit {
   }
 
   deleteFriend(id: number) {
-    this.friendService.deleteFriendById(id)
+    this.friendsService.deleteFriendById(id)
       .subscribe(success => {
         this.loadAllFriends();
       });
   }
 
+  listAddress(id: number) {
+    this.router.navigate(['./addresses/list', id]);
+  }
 }
