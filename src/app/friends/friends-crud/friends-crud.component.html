@@ -25,6 +25,18 @@
                       <option value="" selected>Selecione uma opção</option>
                       <option *ngFor="let ageVal of ageArray" value="{{ ageVal }}">{{ ageVal }}</option>
                     </select>
+
+                    <br />
+
+                    <div>
+                      <img *ngIf="fileBase64" style="max-width: 50%;" [src]="fileBase64" />
+                      <button class="btn btn-danger" (click)="removeImage();" *ngIf="fileBase64">Remover Imagem</button>
+                    </div>
+                    <div class="form-inline">
+                      <label for="image" style="margin-right: 20px;">Imagem: </label>
+                      <input formControlName="image" class="form-control" type="file" (change)="fileChangeEvent($event)" name="Image" accept="image/*"
+                      />
+                    </div>
                   </div>
                   <div class="card-footer">
                     <div class="row float-right">

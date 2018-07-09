@@ -14,8 +14,10 @@ export class FriendsCrudComponent implements OnInit {
 
   form: FormGroup;
   ageArray: number[];
-
   idFriend: number;
+
+  fileToUpload: File;
+  fileBase64: string;
 
   constructor(private formBuilder: FormBuilder,
     private friendsService: FriendsService,
@@ -37,6 +39,9 @@ export class FriendsCrudComponent implements OnInit {
         .subscribe(friend => {
           this.form.patchValue({ name: friend.name });
           this.form.patchValue({ age: friend.age });
+          if (friend.image) {
+            this.fileBase64 = 'data:image/png;base64,' + friend.image;
+          }
         });
     }
 
@@ -48,8 +53,12 @@ export class FriendsCrudComponent implements OnInit {
     // initialize the form
     this.form = new FormGroup({
       name: this.formBuilder.control('', [Validators.required]),
-      age: this.formBuilder.control('')
+      age: this.formBuilder.control(''),
+      image: this.formBuilder.control(null)
     });
+
+    this.fileToUpload = null;
+    this.fileBase64 = null;
   }
 
   saveFriend() {
@@ -58,23 +67,61 @@ export class FriendsCrudComponent implements OnInit {
     const friend = new Friend();
     friend.name = name;
     friend.age = age;
+    friend.image = null;
 
     if (this.idFriend) {
-      friend.id = this.idFriend;
+      // edition of a friend
 
-      this.friendsService.updateFriend(friend)
-        .subscribe(f => {
-          this.gotToFriendsList();
-        });
+      // update image
+      if (this.fileToUpload) {
+        this.friendsService.uploadFriendImage(this.fileToUpload, this.idFriend)
+          .subscribe(friendData => {
+            this.updateFriend(friendData);
+          });
+      } else {
+        this.updateFriend(friend);
+      }
     } else {
+      // insert image
       this.friendsService.createFriend(friend)
         .subscribe(f => {
           this.clearForm();
+          if (this.fileToUpload) {
+            this.friendsService.uploadFriendImage(this.fileToUpload, f.id)
+              .subscribe();
+          }
         });
     }
   }
 
+  updateFriend(friend: Friend) {
+    // update friend data
+    friend.id = this.idFriend;
+
+    this.friendsService.updateFriend(friend)
+      .subscribe(f => {
+        this.gotToFriendsList();
+      });
+  }
+
   gotToFriendsList() {
     this.router.navigate(['./friends']);
+  }
+
+  fileChangeEvent(fileInput: any) {
+    this.fileToUpload = <File>fileInput.target.files[0];
+
+    const reader = new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+
+    const self = this;
+    reader.onload = function () {
+      self.fileBase64 = reader.result;
+    };
+  }
+
+  removeImage() {
+    this.fileBase64 = null;
+    this.fileToUpload = null;
   }
 }
