@@ -15,6 +15,7 @@ export class FriendsCrudComponent implements OnInit {
   form: FormGroup;
   ageArray: number[];
   idFriend: number;
+  friendEdit: Friend;
 
   fileToUpload: File;
   fileBase64: string;
@@ -42,6 +43,9 @@ export class FriendsCrudComponent implements OnInit {
           if (friend.image) {
             this.fileBase64 = 'data:image/png;base64,' + friend.image;
           }
+
+          // save previous friend version
+          this.friendEdit = friend;
         });
     }
 
@@ -59,6 +63,7 @@ export class FriendsCrudComponent implements OnInit {
 
     this.fileToUpload = null;
     this.fileBase64 = null;
+    this.friendEdit = null;
   }
 
   saveFriend() {
@@ -67,8 +72,13 @@ export class FriendsCrudComponent implements OnInit {
     const friend = new Friend();
     friend.name = name;
     friend.age = age;
-    friend.image = null;
 
+    // get previous image, to check later if it was changed
+    if (this.friendEdit && this.fileBase64) {
+      friend.image = this.friendEdit.image;
+    } else {
+      friend.image = null;
+    }
     if (this.idFriend) {
       // edition of a friend
 
