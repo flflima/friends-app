@@ -23,7 +23,7 @@
             <tbody>
               <tr *ngFor="let friend of friends | paginate: { itemsPerPage: 5, currentPage: p }">
                 <td>{{ friend.name }}</td>
-                <td>{{ friend.age }}</td>
+                <td>{{ friend.age === 0 ? 'N/A' : friend.age }}</td>
                 <td>
                   <button class="btn btn-success" (click)="listAddress(friend.id)">Endereço</button>
                 </td>

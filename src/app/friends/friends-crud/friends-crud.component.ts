@@ -50,14 +50,14 @@ export class FriendsCrudComponent implements OnInit {
     }
 
     // fill ages combobox
-    this.ageArray = Array(100).fill(1).map((x, i) => i);
+    this.ageArray = Array.from({length: 100}, (v, k) => k + 1);
   }
 
   clearForm() {
     // initialize the form
     this.form = new FormGroup({
       name: this.formBuilder.control('', [Validators.required]),
-      age: this.formBuilder.control(''),
+      age: this.formBuilder.control(0),
       image: this.formBuilder.control(null)
     });
 
@@ -95,11 +95,14 @@ export class FriendsCrudComponent implements OnInit {
       // insert image
       this.friendsService.createFriend(friend)
         .subscribe(f => {
-          this.clearForm();
+          console.log(this.fileToUpload);
           if (this.fileToUpload) {
             this.friendsService.uploadFriendImage(this.fileToUpload, f.id)
-              .subscribe();
+            .subscribe(f2 => {
+              console.log('image uploaded for ' + f2);
+            });
           }
+          this.clearForm();
         });
     }
   }

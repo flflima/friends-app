@@ -22,7 +22,7 @@
 
                     <label for="age" style="font-weight: bold;">Idade</label>
                     <select formControlName="age" class="form-control">
-                      <option value="" selected>Selecione uma opção</option>
+                      <option value="0" selected>Selecione uma opção</option>
                       <option *ngFor="let ageVal of ageArray" value="{{ ageVal }}">{{ ageVal }}</option>
                     </select>
 
